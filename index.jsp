@@ -64,7 +64,7 @@
             <div class="row gx-5 align-items-center justify-content-center justify-content-lg-between">
                <div class="col-12 col-lg-5">
                   <h2 class="display-4 lh-1 mb-4">Bienvenidos a la nueva era de la medicina</h2>
-                  <p class="lead fw-normal text-muted mb-5 mb-lg-0">Esta sección es perfecta para todos aquellos que les gusta las ultimas caracteristicas, este sistema resuelve el problema de tener que hacer largas filas y ademas de eso, largos tiempos de espero para una respuesta.</p>
+                  <p class="lead fw-normal text-muted mb-5 mb-lg-0">Esta seccion es perfecta para todos aquellos que les gusta las ultimas caracteristicas, este sistema resuelve el problema de tener que hacer largas filas y ademas de eso, largos tiempos de espero para una respuesta.</p>
                </div>
                <div class="col-sm-8 col-md-6">
                   <div class="px-5 px-sm-0"><img class="img-fluid rounded-circle" src=https://source.unsplash.com/u8Jn2rzYIps/900x900 alt="..."></div>

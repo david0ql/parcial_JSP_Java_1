@@ -1,0 +1,1 @@
+<a href="validaciones/logout.jsp">Log out</a>
