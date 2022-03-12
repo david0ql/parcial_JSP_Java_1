@@ -59,8 +59,6 @@ if (sesion.getAttribute("id_usuario") == null || sesion.getAttribute("id_usuario
 }
 
 %>
-
-
 <%!
 	
 	//Método para devolver un MD5

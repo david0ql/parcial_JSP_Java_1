@@ -126,15 +126,15 @@
                   <form id=contactForm action="validaciones/validar_register.jsp" method="POST">
                      <div class="form-floating mb-3">
                         <input class="form-control" id="usuario" placeholder="Enter your name..." required>
-                        <label for="usuario">Nickname</label>
+                        <label for="usuario">Usuario</label>
                      </div>
                      <div class="form-floating mb-3">
                         <input class="form-control" id="password" type="password" placeholder="Enter your password" required>
-                        <label for="password">Ingresa Tu Contrasena</label>
+                        <label for="password">Clave</label>
                      </div>
                      <div class="form-floating mb-3">
                         <input class="form-control" id="nombre" type="text" placeholder="Ingresa tu Nombre" required>
-                        <label for="nombre">Ingresa tu Nombre</label>
+                        <label for="nombre">Nombre</label>
                      </div>
                      <div class="form-floating mb-3">
                         <select class="custom-select" name="estado_civil" required>
