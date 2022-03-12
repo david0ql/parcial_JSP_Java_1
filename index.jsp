@@ -161,7 +161,6 @@ String query = "";
                      </div>
                      <div class="form-floating mb-3">
                         <select class="custom-select" name="estado_civil" required>
-                           <option selected disabled value="">Selecciona uno</option>
                            <option value="Soltero">Soltero</option>
                            <option value="Casado">Casado</option>
                            <option value="Union">Union Libre</option>                                          

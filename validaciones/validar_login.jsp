@@ -37,8 +37,6 @@ rs = sentencia.executeQuery();
 //Setteamos dentro de sesión para poder manejar los datos en otra vista
 
 while (rs.next()) {
-		out.println(rs.getInt(1));
-		out.println("im here");
 		sesion.setAttribute("id_usuario",rs.getString(2));  
 		sesion.setAttribute("usuario",rs.getString(3));  
 		sesion.setAttribute("nombre",rs.getString(5));  
