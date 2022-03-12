@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang=es>
+<html lang="es">
    <head>
       <meta charset="utf-8">
       <meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
       <title>Eps Curitas</title>
-      <link rel=icon type=image/x-icon href="img/EPS.ico">
+      <link rel=icon type=image/x-icon href="assets/favicon.ico">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
       <link href=https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css rel="stylesheet">
       <link rel=preconnect href="https://fonts.gstatic.com">
       <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,600;1,600&amp;display=swap" rel="stylesheet">
@@ -86,24 +87,25 @@
             </div>
          </div>
       </footer>
-      <div class="modal fade" id=Login tabindex=-1 aria-labelledby=feedbackModalLabel aria-hidden=true>
+      <!--modal login-->
+      <div class="modal fade" id="Login" tabindex=-1 aria-labelledby=feedbackModalLabel aria-hidden=true>
          <div class="modal-dialog modal-dialog-centered">
-            <div class=modal-content>
+            <div class="modal-content">
                <div class="modal-header bg-gradient-primary-to-secondary p-4">
-                  <h5 class="modal-title font-alt text-white" id=feedbackModalLabel>Inicia Sesion</h5>
-                  <button class="btn-close btn-close-white" type=button data-bs-dismiss=modal aria-label=Close></button>
+                  <h5 class="modal-title font-alt text-white" id="feedbackModalLabel">Inicia Sesion</h5>
+                  <button class="btn-close btn-close-white" type="button" data-bs-dismiss="modal" aria-label=Close></button>
                </div>
                <div class="modal-body border-0 p-4">
                   <form action="validaciones/validar_login.jsp" method="POST">
                      <div class="form-floating mb-3">
-                        <input class=form-control placeholder="Enter your name..." required name="usuario">
-                        <label for=name>Usuario</label>
+                        <input class="form-control" placeholder="Enter your name..." required name="usuario">
+                        <label for="name">Usuario</label>
                     </div>
                      <div class="form-floating mb-3">
                         <input class="form-control" type="password" placeholder="Enter your password" required name="clave">
-                        <label for=password>Clave</label>
+                        <label for="password">Clave</label>
                     </div>
-                    <div class=d-grid>
+                    <div class="d-grid">
                         <button class="mx-3 btn btn-primary rounded-pill btn-lg" type="submit">Iniciar Sesion</button>
                     </div>
                   </form>
@@ -112,32 +114,98 @@
             </div>
          </div>
       </div>
-      <div class="modal fade" id=Register tabindex=-1 aria-labelledby=feedbackModalLabel aria-hidden=true>
+      <!--modal register cliente-->
+      <div class="modal fade" id="Register" tabindex=-1 aria-labelledby=feedbackModalLabel aria-hidden=true>
          <div class="modal-dialog modal-dialog-centered">
-            <div class=modal-content>
+            <div class="modal-content">
                <div class="modal-header bg-gradient-primary-to-secondary p-4">
-                  <h5 class="modal-title font-alt text-white" id=feedbackModalLabel>Registrate</h5>
-                  <button class="btn-close btn-close-white" type=button data-bs-dismiss=modal aria-label=Close></button>
+                  <h5 class="modal-title font-alt text-white" id="feedbackModalLabel">Registrate</h5>
+                  <button class="btn-close btn-close-white" type="button" data-bs-dismiss="modal" aria-label=Close></button>
                </div>
                <div class="modal-body border-0 p-4">
                   <form id=contactForm action="validaciones/validar_register.jsp" method="POST">
                      <div class="form-floating mb-3">
-                        <input class=form-control id=name placeholder="Enter your name..." data-sb-validations="required"><label for=name>Nickname</label>
-                    </div>
+                        <input class="form-control" id="usuario" placeholder="Enter your name..." required>
+                        <label for="usuario">Nickname</label>
+                     </div>
                      <div class="form-floating mb-3">
-                        <input class=form-control id=password type=password placeholder="Enter your password" data-sb-validations="required"><label for=password>password</label>
-                    </div>
+                        <input class="form-control" id="password" type="password" placeholder="Enter your password" required>
+                        <label for="password">Ingresa Tu Contrasena</label>
+                     </div>
                      <div class="form-floating mb-3">
-                        <input class=form-control id=Confirmpassword type=Confirmpassword placeholder="Confirm your password" data-sb-validations="required">
-                        <label for=password>Confirm your password</label>
-                    </div>
-                    <div class=d-grid>
+                        <input class="form-control" id="nombre" type="text" placeholder="Ingresa tu Nombre" required>
+                        <label for="nombre">Ingresa tu Nombre</label>
+                     </div>
+                     <div class="form-floating mb-3">
+                        <select class="custom-select" name="estado_civil" required>
+                           <option selected disabled value="">Selecciona uno</option>
+                           <option value="Soltero">Soltero</option>
+                           <option value="Casado">Casado</option>
+                           <option value="Union">Union Libre</option>                                          
+                        </select>
+                     </div>                                          
+                     <div class="form-floating mb-3">
+                        <input class="form-control" id="Direccion" type="text" placeholder="Ingrese su Direccion" required>
+                        <label for="Direccion">Ingrese su Direccion</label>
+                     </div>
+                     <div class="form-floating mb-3">
+                        <input class="form-control" id="email" type="email" placeholder="Ingrese su email" required>
+                        <label for="email">Ingrese su email</label>
+                     </div>
+                     <div class="form-floating mb-3">
+                        <select class="custom-select" name="id_permiso"  required>
+                           <option selected disabled value="">Selecciona uno</option>
+                           <option value=""></option>
+                           <option value=""></option>
+                           <option value=""></option>                                          
+                        </select>
+                     </div> 
+                     <div class="form-floating mb-3">
+                        <select class="custom-select" name="id_afiliciacion" required>
+                           <option selected disabled value="">Selecciona uno</option>
+                           <option value=""></option>
+                           <option value=""></option>
+                           <option value=""></option>                                          
+                        </select>
+                     </div> 
+                     <div class="form-floating mb-3">
+                        <select class="custom-select" name="id_ips" required>
+                           <option selected disabled value="">Selecciona uno</option>
+                           <option value=""></option>
+                           <option value=""></option>
+                           <option value=""></option>                                          
+                        </select>
+                     </div> 
+                     <div class="form-floating mb-3">
+                        <select class="custom-select" name="id_grupo" required>
+                           <option selected disabled value="">Selecciona uno</option>
+                           <option value=""></option>
+                           <option value=""></option>
+                           <option value=""></option>                                          
+                        </select>
+                     </div> 
+                     <div class="form-floating mb-3">
+                        <select class="custom-select" name="id_grupo_ingreso" required>
+                           <option selected disabled value="">Selecciona uno</option>
+                           <option value="">A</option>
+                           <option value="">B</option>
+                           <option value="">C</option>                                          
+                        </select>
+                     </div> 
+                     <div class="form-floating mb-3">
+                        <select class="custom-select" name="id_estado_afiliacion" required>
+                           <option selected disabled value="">Selecciona uno</option>
+                           <option value=""></option>
+                           <option value=""></option>
+                           <option value=""></option>                                          
+                        </select>
+                     </div> 
+                    <div class="d-grid">
                         <button class="mx-3 btn btn-primary rounded-pill btn-lg" id=submitButton type=submit>Registrate mamabicho
                     </button>
                     </div>
                   </form>
-               </div>
-                
+               </div>                
                <br>
             </div>
          </div>
