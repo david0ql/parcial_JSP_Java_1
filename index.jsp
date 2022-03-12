@@ -103,11 +103,11 @@
                         <input class="form-control" type="password" placeholder="Enter your password" required name="clave">
                         <label for=password>Clave</label>
                     </div>
+                    <div class=d-grid>
+                        <button class="mx-3 btn btn-primary rounded-pill btn-lg" type="submit">Iniciar Sesion</button>
+                    </div>
                   </form>
                </div>
-               <div class=d-grid>
-                <button class="mx-3 btn btn-primary rounded-pill btn-lg" type="submit">Iniciar Sesion</button>
-            </div>
                <br>
             </div>
          </div>
@@ -131,11 +131,13 @@
                         <input class=form-control id=Confirmpassword type=Confirmpassword placeholder="Confirm your password" data-sb-validations="required">
                         <label for=password>Confirm your password</label>
                     </div>
+                    <div class=d-grid>
+                        <button class="mx-3 btn btn-primary rounded-pill btn-lg" id=submitButton type=submit>Registrate mamabicho
+                    </button>
+                    </div>
                   </form>
                </div>
-                <div class=d-grid>
-                    <button class="mx-3 btn btn-primary rounded-pill btn-lg" id=submitButton type=submit>Registrate mamabicho</button>
-                </div>
+                
                <br>
             </div>
          </div>
