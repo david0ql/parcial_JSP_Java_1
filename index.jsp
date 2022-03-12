@@ -1,3 +1,26 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!-- Imports -->
+<%@page session="true"%>
+<%@ page import="java.sql.*"%>
+<%@ page import="java.util.*" session="true"%>
+<%@ page import="java.math.BigInteger"%>
+<%@ page import="java.security.MessageDigest"%>
+<%@ include file="conexion/conexion.jsp" %>
+<%
+
+//Inicializo una sesión
+
+HttpSession sesion = request.getSession();
+
+//Si hay una sesión redirijo al dashboard
+
+if (sesion.getAttribute("id_usuario") != null) {
+    response.sendRedirect("dashboard.jsp");
+}
+
+String query = "";
+
+%>
 <!DOCTYPE html>
 <html lang="es">
    <head>
@@ -125,15 +148,15 @@
                <div class="modal-body border-0 p-4">
                   <form id=contactForm action="validaciones/validar_register.jsp" method="POST">
                      <div class="form-floating mb-3">
-                        <input class="form-control" id="usuario" placeholder="Enter your name..." required>
+                        <input class="form-control" name="usuario" placeholder="Enter your name..." required>
                         <label for="usuario">Usuario</label>
                      </div>
                      <div class="form-floating mb-3">
-                        <input class="form-control" id="password" type="password" placeholder="Enter your password" required>
+                        <input class="form-control" name="password" type="password" placeholder="Enter your password" required>
                         <label for="password">Clave</label>
                      </div>
                      <div class="form-floating mb-3">
-                        <input class="form-control" id="nombre" type="text" placeholder="Ingresa tu Nombre" required>
+                        <input class="form-control" name="nombre" type="text" placeholder="Ingresa tu Nombre" required>
                         <label for="nombre">Nombre</label>
                      </div>
                      <div class="form-floating mb-3">
@@ -145,63 +168,75 @@
                         </select>
                      </div>                                          
                      <div class="form-floating mb-3">
-                        <input class="form-control" id="Direccion" type="text" placeholder="Ingrese su Direccion" required>
+                        <input class="form-control" name="direccion" type="text" placeholder="Ingrese su Direccion" required>
                         <label for="Direccion">Ingrese su Direccion</label>
                      </div>
                      <div class="form-floating mb-3">
-                        <input class="form-control" id="email" type="email" placeholder="Ingrese su email" required>
+                        <input class="form-control" name="email" type="email" placeholder="Ingrese su email" required>
                         <label for="email">Ingrese su email</label>
                      </div>
                      <div class="form-floating mb-3">
                         <select class="custom-select" name="id_permiso"  required>
-                           <option selected disabled value="">Selecciona uno</option>
-                           <option value=""></option>
-                           <option value=""></option>
-                           <option value=""></option>                                          
+                            <%
+                            //Select permisos
+                            query = "SELECT * FROM permisos where id_permiso != 1";
+                            sentencia = conexion.prepareStatement(query);
+                            rs = sentencia.executeQuery();
+                            while(rs.next()){
+                            %>
+                           <option value="<%=rs.getString("id_permiso")%>"><%=rs.getString("nombre")%></option>
+                           <%
+                            }
+                           %>                                    
                         </select>
                      </div> 
                      <div class="form-floating mb-3">
                         <select class="custom-select" name="id_afiliciacion" required>
-                           <option selected disabled value="">Selecciona uno</option>
-                           <option value=""></option>
-                           <option value=""></option>
-                           <option value=""></option>                                          
+                           <%
+                           //Select afiliación
+                            query = "SELECT * FROM afiliaciones";
+                            sentencia = conexion.prepareStatement(query);
+                            rs = sentencia.executeQuery();
+                            while(rs.next()){
+                           %>
+                           <option value="<%=rs.getString("id_afiliacion")%>"><%=rs.getString("nombre")%></option>
+                           <%
+                            }
+                           %>                                      
                         </select>
                      </div> 
                      <div class="form-floating mb-3">
                         <select class="custom-select" name="id_ips" required>
-                           <option selected disabled value="">Selecciona uno</option>
-                           <option value=""></option>
-                           <option value=""></option>
-                           <option value=""></option>                                          
-                        </select>
-                     </div> 
-                     <div class="form-floating mb-3">
-                        <select class="custom-select" name="id_grupo" required>
-                           <option selected disabled value="">Selecciona uno</option>
-                           <option value=""></option>
-                           <option value=""></option>
-                           <option value=""></option>                                          
+                           <%
+                            //Select ips
+                            query = "SELECT * FROM ips";
+                            sentencia = conexion.prepareStatement(query);
+                            rs = sentencia.executeQuery();
+                            while(rs.next()){
+                           %>
+                           <option value="<%=rs.getString("id_ips")%>"><%=rs.getString("nombre")%></option>
+                           <%
+                            }
+                           %>                                        
                         </select>
                      </div> 
                      <div class="form-floating mb-3">
                         <select class="custom-select" name="id_grupo_ingreso" required>
-                           <option selected disabled value="">Selecciona uno</option>
-                           <option value="">A</option>
-                           <option value="">B</option>
-                           <option value="">C</option>                                          
+                           <%
+                            //Select grupos_ingresos
+                            query = "SELECT * FROM grupos_ingresos";
+                            sentencia = conexion.prepareStatement(query);
+                            rs = sentencia.executeQuery();
+                            while(rs.next()){
+                           %>
+                           <option value="<%=rs.getString("id_grupo_ingreso")%>"><%=rs.getString("nombre")%></option>
+                           <%
+                            }
+                           %>                                            
                         </select>
-                     </div> 
-                     <div class="form-floating mb-3">
-                        <select class="custom-select" name="id_estado_afiliacion" required>
-                           <option selected disabled value="">Selecciona uno</option>
-                           <option value=""></option>
-                           <option value=""></option>
-                           <option value=""></option>                                          
-                        </select>
-                     </div> 
+                     </div>
                     <div class="d-grid">
-                        <button class="mx-3 btn btn-primary rounded-pill btn-lg" id=submitButton type=submit>Registrate mamabicho
+                        <button class="mx-3 btn btn-primary rounded-pill btn-lg" id=submitButton type=submit>Registrate
                     </button>
                     </div>
                   </form>

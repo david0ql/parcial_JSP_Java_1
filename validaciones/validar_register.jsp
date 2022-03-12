@@ -1,0 +1,94 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!-- Imports -->
+<%@page session="true"%>
+<%@ page import="java.sql.*"%>
+<%@ page import="java.util.*" session="true"%>
+<%@ page import="java.math.BigInteger"%>
+<%@ page import="java.security.MessageDigest"%>
+<%@ include file="../conexion/conexion.jsp" %>
+
+<%
+//Inicializo una sesión
+
+HttpSession sesion = request.getSession();
+
+//Recibimos los parámetros que nos hayan enviado por post
+
+String usuario = "";
+String clave = "";
+String nombre = "";
+String estado_civil = "";
+String direccion = "";
+String email = "";
+String id_permiso = "";
+String id_afiliciacion = "";
+String id_ips = "";
+String id_grupo = "";
+String id_grupo_ingreso = "";
+Boolean id_estado_afiliacion = true;
+String query = "";
+
+//Intentamos settear los parámetros
+
+try{
+	usuario = request.getParameter("usuario").toString();
+	clave = getMD5(request.getParameter("clave").toString());
+	nombre = request.getParameter("nombre").toString();
+	estado_civil = request.getParameter("estado_civil").toString();
+	direccion = request.getParameter("direccion").toString();
+	email = request.getParameter("email").toString();
+	id_permiso = request.getParameter("id_permiso").toString();
+	id_afiliciacion = request.getParameter("id_afiliciacion").toString();
+	id_ips = request.getParameter("id_ips").toString();
+	id_grupo = request.getParameter("id_grupo").toString();
+	id_grupo_ingreso = request.getParameter("id_grupo_ingreso").toString();
+}catch(Exception e){
+	out.println(e);
+}
+
+//Usamos preparedStaments para más seguridad
+
+query = "INSERT INTO usuarios (usuario, clave, nombre, estado_civil, direccion, correo, id_permiso, id_afiliciacion, id_ips, id_grupo_ingreso, estado_afiliacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+sentencia = conexion.prepareStatement(query);
+sentencia.setString(1, usuario);
+sentencia.setString(2, clave);
+sentencia.setString(3, nombre);
+sentencia.setString(4, estado_civil);
+sentencia.setString(5, direccion);
+sentencia.setInt(6, id_permiso);
+sentencia.setInt(7, id_afiliciacion);
+sentencia.setInt(8, id_ips);
+sentencia.setInt(9, id_grupo);
+sentencia.setInt(10, id_grupo_ingreso);
+sentencia.setBoolean(11, id_estado_afiliacion);
+rs = sentencia.executeQuery();
+
+out.println(rs);
+
+//Setteamos dentro de sesión para poder manejar los datos en otra vista
+
+
+%>
+<%!
+	
+	//Método para devolver un MD5
+
+    public String getMD5(String input) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] encBytes = md.digest(input.getBytes());
+            BigInteger numero = new BigInteger(1, encBytes);
+            String encString = numero.toString(16);
+            while (encString.length() < 32) {
+                encString = "0" + encString;
+            }
+            return encString;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    //Métdo para saber si el dato es nulo o no, de lo contrario, redirigir nuevamente al index
+
+
+%>
