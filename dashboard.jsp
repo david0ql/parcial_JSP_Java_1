@@ -109,9 +109,16 @@ if (sesion.getAttribute("id_usuario") == null || sesion.getAttribute("id_usuario
                                     </thead>
                                     <tbody>
                                     	<%
+                                      if (sesion.getAttribute("id_permiso").equals("1")) {
                                         query = "select *, afiliaciones.nombre as 'afiliar', grupos_ingresos.nombre as 'grupito', permisos.nombre as 'rol', ips.nombre as 'ips_name' from usuarios inner join afiliaciones ON afiliaciones.id_afiliacion = usuarios.id_afiliacion inner join grupos_ingresos ON grupos_ingresos.id_grupo_ingreso = usuarios.id_grupo_ingreso inner join permisos ON permisos.id_permiso = usuarios.id_permiso inner join ips ON ips.id_ips = usuarios.id_ips WHERE id_usuario != 1";
                                         sentencia = conexion.prepareStatement(query);
                                         rs = sentencia.executeQuery();
+                                      }else{
+                                        query = "select *, afiliaciones.nombre as 'afiliar', grupos_ingresos.nombre as 'grupito', permisos.nombre as 'rol', ips.nombre as 'ips_name' from usuarios inner join afiliaciones ON afiliaciones.id_afiliacion = usuarios.id_afiliacion inner join grupos_ingresos ON grupos_ingresos.id_grupo_ingreso = usuarios.id_grupo_ingreso inner join permisos ON permisos.id_permiso = usuarios.id_permiso inner join ips ON ips.id_ips = usuarios.id_ips WHERE id_usuario = ?";
+                                        sentencia = conexion.prepareStatement(query);
+                                        sentencia.setInt(1, (Integer) Integer.valueOf(sesion.getAttribute("id_usuario").toString()));
+                                        rs = sentencia.executeQuery();
+                                      }
                                     	while(rs.next()){
                                     	%>
                                         <tr>
