@@ -28,6 +28,7 @@ if (sesion.getAttribute("id_usuario") == null || sesion.getAttribute("id_usuario
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />        
         <title>Dashboard</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
         <link href="css/stylesDashboard.css" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
@@ -141,11 +142,12 @@ if (sesion.getAttribute("id_usuario") == null || sesion.getAttribute("id_usuario
          <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                <div class="modal-header bg-gradient-primary-to-secondary p-4">
-                  <h5 class="modal-title font-alt text-black" id="feedbackModalLabel">Registrate</h5>
+                  <h5 class="modal-title font-alt text-black" id="feedbackModalLabel">Cambiar datos - Deberá volver a iniciar sesión</h5>
                   <button class="btn-close btn-close-white" type="button" data-bs-dismiss="modal" aria-label=Close></button>
                </div>
                <div class="modal-body border-0 p-4">
-                  <form id=contactForm action="validaciones/validar_register.jsp" method="POST">
+                  <form id=contactForm action="validaciones/validar_cambiar_datos.jsp" method="POST">
+                    <input type="hidden" name="id_usuario" value="<% out.println(sesion.getAttribute("id_usuario")); %>">
                      <div class="form-floating mb-3">
                         <input class="form-control" name="usuario" placeholder="Enter your name..." required value="<% out.println(sesion.getAttribute("usuario")); %>">
                         <label for="usuario">Usuario</label>
@@ -170,21 +172,7 @@ if (sesion.getAttribute("id_usuario") == null || sesion.getAttribute("id_usuario
                         <label for="email">Ingrese su email</label>
                      </div>
                      <div class="form-floating mb-3">
-                        <select class="custom-select" name="id_permiso"  required>
-                            <%
-                            //Select permisos
-                            query = "SELECT * FROM permisos where id_permiso != 1";
-                            sentencia = conexion.prepareStatement(query);
-                            rs = sentencia.executeQuery();
-                            while(rs.next()){
-                            %>
-                           <option value="<%=rs.getString("id_permiso")%>"><%=rs.getString("nombre")%></option>
-                           <%
-                            }
-                           %>                                    
-                        </select>
-                     </div> 
-                     <div class="form-floating mb-3">
+                        Afiliacion
                         <select class="custom-select" name="id_afiliciacion" required>
                            <%
                            //Select afiliación
@@ -200,6 +188,7 @@ if (sesion.getAttribute("id_usuario") == null || sesion.getAttribute("id_usuario
                         </select>
                      </div> 
                      <div class="form-floating mb-3">
+                        IPS
                         <select class="custom-select" name="id_ips" required>
                            <%
                             //Select ips
@@ -215,6 +204,7 @@ if (sesion.getAttribute("id_usuario") == null || sesion.getAttribute("id_usuario
                         </select>
                      </div> 
                      <div class="form-floating mb-3">
+                        Grupo Ingreso
                         <select class="custom-select" name="id_grupo_ingreso" required>
                            <%
                             //Select grupos_ingresos
