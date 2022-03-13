@@ -152,7 +152,7 @@ String query = "";
                         <label for="usuario">Usuario</label>
                      </div>
                      <div class="form-floating mb-3">
-                        <input class="form-control" name="password" type="password" placeholder="Enter your password" required>
+                        <input class="form-control" name="clave" type="password" placeholder="Enter your password" required>
                         <label for="password">Clave</label>
                      </div>
                      <div class="form-floating mb-3">
