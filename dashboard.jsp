@@ -147,7 +147,7 @@ if (sesion.getAttribute("id_usuario") == null || sesion.getAttribute("id_usuario
                </div>
                <div class="modal-body border-0 p-4">
                   <form id=contactForm action="validaciones/validar_cambiar_datos.jsp" method="POST">
-                    <input type="hidden" name="id_usuario" value="<% out.println(sesion.getAttribute("id_usuario")); %>">
+                    <input type="hidden" name="id_usuario" value="<% out.print(sesion.getAttribute("id_usuario")); %>">
                      <div class="form-floating mb-3">
                         <input class="form-control" name="usuario" placeholder="Enter your name..." required value="<% out.println(sesion.getAttribute("usuario")); %>">
                         <label for="usuario">Usuario</label>
@@ -176,7 +176,7 @@ if (sesion.getAttribute("id_usuario") == null || sesion.getAttribute("id_usuario
                         <select class="custom-select" name="id_afiliciacion" required>
                            <%
                            //Select afiliación
-                            query = "SELECT * FROM afiliaciones";
+                            query = "select * from afiliaciones";
                             sentencia = conexion.prepareStatement(query);
                             rs = sentencia.executeQuery();
                             while(rs.next()){
@@ -229,7 +229,7 @@ if (sesion.getAttribute("id_usuario") == null || sesion.getAttribute("id_usuario
             </div>
          </div>
       </div>
-                <footer class="py-4 bg-light mt-auto">
+                <footer c   ass="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
                             <div class="text-muted">Copyright &copy; Parcial 2022</div>
