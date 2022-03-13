@@ -103,11 +103,12 @@ if (sesion.getAttribute("id_usuario") == null || sesion.getAttribute("id_usuario
                                             <th>Grupo ingresos</th>
                                             <th>Estado afiliación</th>
                                             <th>Fecha creación</th>
+                                            <th>Eliminar</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                     	<%
-                                        query = "select *, afiliaciones.nombre as 'afiliar', grupos_ingresos.nombre as 'grupito', permisos.nombre as 'rol', ips.nombre as 'ips_name' from usuarios inner join afiliaciones ON afiliaciones.id_afiliacion = usuarios.id_afiliacion inner join grupos_ingresos ON grupos_ingresos.id_grupo_ingreso = usuarios.id_grupo_ingreso inner join permisos ON permisos.id_permiso = usuarios.id_permiso inner join ips ON ips.id_ips = usuarios.id_ips";
+                                        query = "select *, afiliaciones.nombre as 'afiliar', grupos_ingresos.nombre as 'grupito', permisos.nombre as 'rol', ips.nombre as 'ips_name' from usuarios inner join afiliaciones ON afiliaciones.id_afiliacion = usuarios.id_afiliacion inner join grupos_ingresos ON grupos_ingresos.id_grupo_ingreso = usuarios.id_grupo_ingreso inner join permisos ON permisos.id_permiso = usuarios.id_permiso inner join ips ON ips.id_ips = usuarios.id_ips WHERE id_usuario != 1";
                                         sentencia = conexion.prepareStatement(query);
                                         rs = sentencia.executeQuery();
                                     	while(rs.next()){
@@ -124,6 +125,7 @@ if (sesion.getAttribute("id_usuario") == null || sesion.getAttribute("id_usuario
                                             <td><%=rs.getString("grupito")%></td>
                                             <td><%=rs.getString("estado_afiliacion")%></td>
                                             <td><%=rs.getString("fecha_creacion")%></td>
+                                            <td><a href="validaciones/eliminar_usuarios.jsp?id=<%=rs.getString("id_usuario")%>"><button type="button" class="btn btn-danger">Eliminar</button></a></td>
                                         </tr>  
                                         <%
                                     	}
