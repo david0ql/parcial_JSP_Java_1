@@ -14,6 +14,9 @@ HttpSession sesion = request.getSession();
 //Declaración de variables
 
 String query = "";
+String query2 = "";
+String query3 = "";
+String query4 = "";
 
 if (sesion.getAttribute("id_usuario") == null || sesion.getAttribute("id_usuario").equals("0")) {
     response.sendRedirect("index.jsp");
@@ -80,9 +83,6 @@ if (sesion.getAttribute("id_usuario") == null || sesion.getAttribute("id_usuario
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item active">Bienvenido a tu gestionador de tablas, <% out.println(sesion.getAttribute("nombre")); %>.</li>
                         </ol>
-                        <%
-                        if (sesion.getAttribute("id_permiso").equals("1")) {
-                        %>
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
@@ -103,6 +103,7 @@ if (sesion.getAttribute("id_usuario") == null || sesion.getAttribute("id_usuario
                                             <th>Grupo ingresos</th>
                                             <th>Estado afiliación</th>
                                             <th>Fecha creación</th>
+                                            <th>Editar</th>
                                             <th>Eliminar</th>
                                         </tr>
                                     </thead>
@@ -125,8 +126,110 @@ if (sesion.getAttribute("id_usuario") == null || sesion.getAttribute("id_usuario
                                             <td><%=rs.getString("grupito")%></td>
                                             <td><%=rs.getString("estado_afiliacion")%></td>
                                             <td><%=rs.getString("fecha_creacion")%></td>
+                                            <td>
+                                              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal<%=rs.getString("id_usuario")%>">Editar</button>
+                                            </td>
                                             <td><a href="validaciones/eliminar_usuarios.jsp?id=<%=rs.getString("id_usuario")%>"><button type="button" class="btn btn-danger">Eliminar</button></a></td>
-                                        </tr>  
+                                        </tr>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="exampleModal<%=rs.getString("id_usuario")%>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                          <div class="modal-dialog">
+                                            <div class="modal-content">
+                                              <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Datos de: <%=rs.getString("nombre").toUpperCase()%></h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                  <span aria-hidden="true">&times;</span>
+                                                </button>
+                                              </div>
+                                              <div class="modal-body">
+                                              <form id=contactForm action="validaciones/validar_cambiar_datos.jsp" method="POST">
+                                                <input type="hidden" name="id_usuario" value="<%=rs.getString("id_usuario")%>">
+                                                 <div class="form-floating mb-3">
+                                                    <input class="form-control" name="usuario" required value="<%=rs.getString("usuario")%>">
+                                                    <label for="usuario">Usuario</label>
+                                                 </div>
+                                                 <div class="form-floating mb-3">
+                                                  <input class="form-control" name="nombre" type="text" placeholder="Ingresa tu Nombre" required value="<%=rs.getString("nombre")%>">
+                                                  <label for="nombre">Nombre</label>
+                                                </div>
+                                               <div class="form-floating mb-3">
+                                                  <select class="custom-select" name="estado_civil" required>
+                                                     <option value="Soltero">Soltero</option>
+                                                     <option value="Casado">Casado</option>
+                                                     <option value="Union">Union Libre</option>                                          
+                                                  </select>
+                                               </div>
+                                               <div class="form-floating mb-3">
+                                                  <input class="form-control" name="nombre" type="text" placeholder="Ingresa tu Nombre" required value="<%=rs.getString("direccion")%>">
+                                                  <label for="nombre">Direccion</label>
+                                                </div>
+                                                <div class="form-floating mb-3">
+                                                  <input class="form-control" name="nombre" type="text" placeholder="Ingresa tu Nombre" required value="<%=rs.getString("correo")%>">
+                                                  <label for="nombre">Correo</label>
+                                                </div>
+                                                <%
+                                                if(sesion.getAttribute("id_permiso").equals("1")){
+                                                %>
+                                                <div class="form-floating mb-3">
+                                                Afiliacion
+                                                <select class="custom-select" name="id_afiliciacion" required>
+                                                   <%
+                                                   //Select afiliación
+                                                    query2 = "select * from afiliaciones";
+                                                    sentencia2 = conexion.prepareStatement(query2);
+                                                    rs2 = sentencia2.executeQuery();
+                                                    while(rs2.next()){
+                                                   %>
+                                                   <option value="<%=rs2.getString("id_afiliacion")%>"><%=rs2.getString("nombre")%></option>
+                                                   <%
+                                                    }
+                                                   %>                                      
+                                                </select>
+                                             </div>
+                                             <div class="form-floating mb-3">
+                                              IPS
+                                              <select class="custom-select" name="id_ips" required>
+                                                 <%
+                                                  //Select ips
+                                                  query3 = "SELECT * FROM ips";
+                                                  sentencia3 = conexion.prepareStatement(query3);
+                                                  rs3 = sentencia3.executeQuery();
+                                                  while(rs3.next()){
+                                                 %>
+                                                 <option value="<%=rs3.getString("id_ips")%>"><%=rs3.getString("nombre")%></option>
+                                                 <%
+                                                  }
+                                                 %>                                        
+                                              </select>
+                                           </div> 
+                                           <div class="form-floating mb-3">
+                                              Grupo Ingreso
+                                              <select class="custom-select" name="id_grupo_ingreso" required>
+                                                 <%
+                                                  //Select grupos_ingresos
+                                                  query4 = "SELECT * FROM grupos_ingresos";
+                                                  sentencia4 = conexion.prepareStatement(query4);
+                                                  rs4 = sentencia4.executeQuery();
+                                                  while(rs4.next()){
+                                                 %>
+                                                 <option value="<%=rs4.getString("id_grupo_ingreso")%>"><%=rs4.getString("nombre")%></option>
+                                                 <%
+                                                  }
+                                                 %>                                            
+                                              </select>
+                                           </div> 
+                                           <%
+                                         }
+                                           %>
+                                           <div class="d-grid">
+                        <button class="mx-3 btn btn-primary rounded-pill btn-lg" id=submitButton type=submit>Registrate
+                    </button>
+                    </div>
+                                               </form>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div> 
                                         <%
                                     	}
                                         %>
@@ -134,9 +237,6 @@ if (sesion.getAttribute("id_usuario") == null || sesion.getAttribute("id_usuario
                                 </table>
                             </div>
                         </div>
-                        <%
-                   		}
-                        %>
                     </div>
                 </main>
                       <!--modal register cliente-->
@@ -240,7 +340,8 @@ if (sesion.getAttribute("id_usuario") == null || sesion.getAttribute("id_usuario
                 </footer>
             </div>
         </div>
-
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
