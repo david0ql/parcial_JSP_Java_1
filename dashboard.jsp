@@ -17,9 +17,16 @@ String query = "";
 String query2 = "";
 String query3 = "";
 String query4 = "";
+String permiso = "";
 
 if (sesion.getAttribute("id_usuario") == null || sesion.getAttribute("id_usuario").equals("0")) {
     response.sendRedirect("index.jsp");
+}
+
+if (sesion.getAttribute("id_permiso").equals("1")) {
+  permiso = "Administrador";
+}else{
+  permiso = "Usuario";
 }
 
 %>
@@ -48,9 +55,8 @@ if (sesion.getAttribute("id_usuario") == null || sesion.getAttribute("id_usuario
             <!-- Navbar-->
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">                        
-                        <li><a class="dropdown-item" data-bs-toggle=modal data-bs-target=#change_data>Editar Datos</a></li>
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><hr class="dropdown-divider" /></li>
                         <li><a class="dropdown-item" href="validaciones/logout.jsp">Logout</a></li>
                     </ul>
@@ -79,7 +85,7 @@ if (sesion.getAttribute("id_usuario") == null || sesion.getAttribute("id_usuario
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Administrador</h1>
+                        <h1 class="mt-4"><% out.print(permiso); %></h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item active">Bienvenido a tu gestionador de tablas, <% out.println(sesion.getAttribute("nombre")); %>.</li>
                         </ol>
@@ -116,7 +122,7 @@ if (sesion.getAttribute("id_usuario") == null || sesion.getAttribute("id_usuario
                                     <tbody>
                                     	<%
                                       if (sesion.getAttribute("id_permiso").equals("1")) {
-                                        query = "select *, afiliaciones.nombre as 'afiliar', grupos_ingresos.nombre as 'grupito', permisos.nombre as 'rol', ips.nombre as 'ips_name' from usuarios inner join afiliaciones ON afiliaciones.id_afiliacion = usuarios.id_afiliacion inner join grupos_ingresos ON grupos_ingresos.id_grupo_ingreso = usuarios.id_grupo_ingreso inner join permisos ON permisos.id_permiso = usuarios.id_permiso inner join ips ON ips.id_ips = usuarios.id_ips WHERE id_usuario != 1";
+                                        query = "select *, afiliaciones.nombre as 'afiliar', grupos_ingresos.nombre as 'grupito', permisos.nombre as 'rol', ips.nombre as 'ips_name' from usuarios inner join afiliaciones ON afiliaciones.id_afiliacion = usuarios.id_afiliacion inner join grupos_ingresos ON grupos_ingresos.id_grupo_ingreso = usuarios.id_grupo_ingreso inner join permisos ON permisos.id_permiso = usuarios.id_permiso inner join ips ON ips.id_ips = usuarios.id_ips WHERE id_usuario";
                                         sentencia = conexion.prepareStatement(query);
                                         rs = sentencia.executeQuery();
                                       }else{
@@ -180,11 +186,11 @@ if (sesion.getAttribute("id_usuario") == null || sesion.getAttribute("id_usuario
                                                   </select>
                                                </div>
                                                <div class="form-floating mb-3">
-                                                  <input class="form-control" name="nombre" type="text" placeholder="Ingresa tu Nombre" required value="<%=rs.getString("direccion")%>">
+                                                  <input class="form-control" name="direccion" type="text" placeholder="Ingresa tu Nombre" required value="<%=rs.getString("direccion")%>">
                                                   <label for="nombre">Direccion</label>
                                                 </div>
                                                 <div class="form-floating mb-3">
-                                                  <input class="form-control" name="nombre" type="text" placeholder="Ingresa tu Nombre" required value="<%=rs.getString("correo")%>">
+                                                  <input class="form-control" name="email" type="text" placeholder="Ingresa tu Nombre" required value="<%=rs.getString("correo")%>">
                                                   <label for="nombre">Correo</label>
                                                 </div>
                                                 <%
@@ -259,99 +265,7 @@ if (sesion.getAttribute("id_usuario") == null || sesion.getAttribute("id_usuario
                         </div>
                     </div>
                 </main>
-                      <!--modal register cliente-->
-      <div class="modal fade" id="change_data" tabindex=-1 aria-labelledby=feedbackModalLabel aria-hidden=true>
-         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-               <div class="modal-header bg-gradient-primary-to-secondary p-4">
-                  <h5 class="modal-title font-alt text-black" id="feedbackModalLabel">Cambiar datos - Deberá volver a iniciar sesión</h5>
-                  <button class="btn-close btn-close-white" type="button" data-bs-dismiss="modal" aria-label=Close></button>
-               </div>
-               <div class="modal-body border-0 p-4">
-                  <form id=contactForm action="validaciones/validar_cambiar_datos.jsp" method="POST">
-                    <input type="hidden" name="id_usuario" value="<% out.print(sesion.getAttribute("id_usuario")); %>">
-                     <div class="form-floating mb-3">
-                        <input class="form-control" name="usuario" placeholder="Enter your name..." required value="<% out.println(sesion.getAttribute("usuario")); %>">
-                        <label for="usuario">Usuario</label>
-                     </div>
-                     <div class="form-floating mb-3">
-                        <input class="form-control" name="nombre" type="text" placeholder="Ingresa tu Nombre" required value="<% out.println(sesion.getAttribute("nombre")); %>">
-                        <label for="nombre">Nombre</label>
-                     </div>
-                     <div class="form-floating mb-3">
-                        <select class="custom-select" name="estado_civil" required>
-                           <option value="Soltero">Soltero</option>
-                           <option value="Casado">Casado</option>
-                           <option value="Union">Union Libre</option>                                          
-                        </select>
-                     </div>                                          
-                     <div class="form-floating mb-3">
-                        <input class="form-control" name="direccion" type="text" placeholder="Ingrese su Direccion" required value="<% out.println(sesion.getAttribute("direccion")); %>">
-                        <label for="Direccion">Ingrese su Direccion</label>
-                     </div>
-                     <div class="form-floating mb-3">
-                        <input class="form-control" name="email" type="email" placeholder="Ingrese su email" required value="<% out.println(sesion.getAttribute("correo")); %>">
-                        <label for="email">Ingrese su email</label>
-                     </div>
-                     <div class="form-floating mb-3">
-                        Afiliacion
-                        <select class="custom-select" name="id_afiliciacion" required>
-                           <%
-                           //Select afiliación
-                            query = "select * from afiliaciones";
-                            sentencia = conexion.prepareStatement(query);
-                            rs = sentencia.executeQuery();
-                            while(rs.next()){
-                           %>
-                           <option value="<%=rs.getString("id_afiliacion")%>"><%=rs.getString("nombre")%></option>
-                           <%
-                            }
-                           %>                                      
-                        </select>
-                     </div> 
-                     <div class="form-floating mb-3">
-                        IPS
-                        <select class="custom-select" name="id_ips" required>
-                           <%
-                            //Select ips
-                            query = "SELECT * FROM ips";
-                            sentencia = conexion.prepareStatement(query);
-                            rs = sentencia.executeQuery();
-                            while(rs.next()){
-                           %>
-                           <option value="<%=rs.getString("id_ips")%>"><%=rs.getString("nombre")%></option>
-                           <%
-                            }
-                           %>                                        
-                        </select>
-                     </div> 
-                     <div class="form-floating mb-3">
-                        Grupo Ingreso
-                        <select class="custom-select" name="id_grupo_ingreso" required>
-                           <%
-                            //Select grupos_ingresos
-                            query = "SELECT * FROM grupos_ingresos";
-                            sentencia = conexion.prepareStatement(query);
-                            rs = sentencia.executeQuery();
-                            while(rs.next()){
-                           %>
-                           <option value="<%=rs.getString("id_grupo_ingreso")%>"><%=rs.getString("nombre")%></option>
-                           <%
-                            }
-                           %>                                            
-                        </select>
-                     </div>
-                    <div class="d-grid">
-                        <button class="mx-3 btn btn-primary rounded-pill btn-lg" id=submitButton type=submit>Registrate
-                    </button>
-                    </div>
-                  </form>
-               </div>                
-               <br>
-            </div>
-         </div>
-      </div>
-                <footer c   ass="py-4 bg-light mt-auto">
+                <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
                             <div class="text-muted">Copyright &copy; Parcial 2022</div>

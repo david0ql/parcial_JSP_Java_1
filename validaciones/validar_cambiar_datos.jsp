@@ -30,14 +30,10 @@ String query = "";
 
 //Intentamos settear los parámetros
 
-
-//hardcodeando cosas que no deberían de estar
-
-
-if(sesion.getAttribute("id_permiso").equals("1")){
+if(Integer.valueOf(sesion.getAttribute("id_usuario").toString()) == 1){
 
 	try{
-		id_usuario = Integer.parseInt(request.getParameter("id_usuario"));
+		id_usuario = Integer.valueOf(request.getParameter("id_usuario"));
 		usuario = request.getParameter("usuario").toString();
 		nombre = request.getParameter("nombre").toString();
 		estado_civil = request.getParameter("estado_civil").toString();
@@ -66,7 +62,7 @@ if(sesion.getAttribute("id_permiso").equals("1")){
 	sentencia.setBoolean(10, id_estado_afiliacion);
 	sentencia.setInt(11, id_usuario);
 	sentencia.executeUpdate();
-
+response.sendRedirect("../dashboard.jsp");
 }else{
 
 	try{
@@ -93,11 +89,10 @@ if(sesion.getAttribute("id_permiso").equals("1")){
 	sentencia.executeUpdate();
 
 	//Pedimos que vuelva a iniciar sesión para volver a traer los datos
-
+response.sendRedirect("../dashboard.jsp");
 }
 
 //Redirect luego de cambiar los datos para resetear la sesión
 
-response.sendRedirect("logout.jsp");
 
 %>
