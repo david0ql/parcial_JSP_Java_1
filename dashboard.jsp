@@ -104,7 +104,13 @@ if (sesion.getAttribute("id_usuario") == null || sesion.getAttribute("id_usuario
                                             <th>Estado afiliación</th>
                                             <th>Fecha creación</th>
                                             <th>Editar</th>
+                                            <%
+                                            if(sesion.getAttribute("id_permiso").equals("1")){
+                                            %>
                                             <th>Eliminar</th>
+                                            <%
+                                          }
+                                            %>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -136,7 +142,14 @@ if (sesion.getAttribute("id_usuario") == null || sesion.getAttribute("id_usuario
                                             <td>
                                               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal<%=rs.getString("id_usuario")%>">Editar</button>
                                             </td>
+                                            <%
+                                            if(sesion.getAttribute("id_permiso").equals("1")){
+                                            %>
                                             <td><a href="validaciones/eliminar_usuarios.jsp?id=<%=rs.getString("id_usuario")%>"><button type="button" class="btn btn-danger">Eliminar</button></a></td>
+                                            <%
+                                          }
+                                            %>
+                                            
                                         </tr>
                                         <!-- Modal -->
                                         <div class="modal fade" id="exampleModal<%=rs.getString("id_usuario")%>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
