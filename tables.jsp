@@ -14,7 +14,7 @@ HttpSession sesion = request.getSession();
 //Declaración de variables
 
 String query = "";
-
+String query2 = "";
 if (sesion.getAttribute("id_usuario") == null || sesion.getAttribute("id_usuario").equals("0")) {
     response.sendRedirect("index.jsp");
 }
@@ -39,9 +39,9 @@ if (sesion.getAttribute("id_usuario") == null || sesion.getAttribute("id_usuario
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Modales-->
-            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+            <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
                 <button class="btn btn-primary rounded-pill px-3 mb-2 mb-lg-0" data-bs-toggle=modal data-bs-target="#crear_cita"><span class="d-flex align-items-center"><span class=small>Solicitar Cita</span></span></button>
-            </form>
+            </div>
             <!-- Navbar-->
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
@@ -90,32 +90,84 @@ if (sesion.getAttribute("id_usuario") == null || sesion.getAttribute("id_usuario
                                     <thead>
                                         <tr>
                                             <th>Id Cita Medica</th>
-                                            <th>Id usuario</th>                                            
-                                            <th>Id Consulta</th>
                                             <th>Fecha Consulta</th>
                                             <th>Nombre Usuario</th>
                                             <th>Tipo Consulta</th>                                            
                                             <th>Editar</th>
+                                            <%
+                                            if(sesion.getAttribute("id_permiso").equals("1")){
+                                            %>
                                             <th>Eliminar</th>
+                                            <%
+                                          }
+                                            %>
                                         </tr>
                                     </thead>                                   
                                     <tbody> 
                                         <%
+                                        if (sesion.getAttribute("id_permiso").equals("1")) {
                                         query = "SELECT citas_medicas.id_cita_medica,citas_medicas.id_usuario,citas_medicas.id_tipo_consulta,citas_medicas.fecha_consulta,  usuarios.nombre as 'usuario', solicitudes.nombre as 'consulta' from citas_medicas inner join usuarios ON usuarios.id_usuario = citas_medicas.id_usuario inner join solicitudes ON solicitudes.id_solicitud = citas_medicas.id_tipo_consulta";
                                         sentencia = conexion.prepareStatement(query);
                                         rs = sentencia.executeQuery();
+                                    }else{
+                                        query = "SELECT citas_medicas.id_cita_medica,citas_medicas.id_usuario,citas_medicas.id_tipo_consulta,citas_medicas.fecha_consulta,  usuarios.nombre as 'usuario', solicitudes.nombre as 'consulta' from citas_medicas inner join usuarios ON usuarios.id_usuario = citas_medicas.id_usuario inner join solicitudes ON solicitudes.id_solicitud = citas_medicas.id_tipo_consulta WHERE citas_medicas.id_usuario = ?";
+                                        sentencia = conexion.prepareStatement(query);
+                                        sentencia.setInt(1, (Integer) Integer.valueOf(sesion.getAttribute("id_usuario").toString()));
+                                        rs = sentencia.executeQuery();
+                                    }
+                                        
                                         while(rs.next()){
                                         %>
                                         <tr>
                                             <td><%=rs.getString("id_cita_medica")%></td>
-                                            <td><%=rs.getString("id_usuario")%></td>
-                                            <td><%=rs.getString("id_tipo_consulta")%></td>
                                             <td><%=rs.getString("fecha_consulta")%></td>
                                             <td><%=rs.getString("usuario")%></td>
                                             <td><%=rs.getString("consulta")%></td>                                                                                                                                  
-                                            <td><button type="button" class="btn btn-success" data-bs-toggle=modal data-bs-target="#exampleModal<%=rs.getString("id_usuario")%>">Editar</button></td>
-                                            <td><a href="validaciones/eliminar_usuarios.jsp?id=<%=rs.getString("id_usuario")%>"><button type="button" class="btn btn-danger">Eliminar</button></a></td>
+                                            <td><button type="button" class="btn btn-success" data-bs-toggle=modal data-bs-target="#exampleModal<%=rs.getString("id_cita_medica")%>">Editar</button></td>
+                                            <%
+                                            if(sesion.getAttribute("id_permiso").equals("1")){
+                                            %>
+                                            <td><a href="validaciones/eliminar_citas.jsp?id=<%=rs.getString("id_cita_medica")%>"><button type="button" class="btn btn-danger">Eliminar</button></a></td>
+                                            <%
+                                          }
+                                            %>
                                         </tr>
+                                        <!---- Modal de editar xd xdddd ----->
+                                        <div class="modal fade" id="exampleModal<%=rs.getString("id_cita_medica")%>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                          <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                              <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Modal de <%=rs.getString("usuario")%></h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                  <span aria-hidden="true">&times;</span>
+                                                </button>
+                                              </div>
+                                              <div class="modal-body">
+                                                <form action="validaciones/cambiar_cita.jsp">
+                                                    <input type="hidden" name="id_cita" value="<%=rs.getString("id_cita_medica")%>">
+                                                    <input type="text" readonly="" value="<%=rs.getString("usuario")%>">
+                                                    <br>
+                                                    <select name="solicitudes" id="">
+                                                        <%
+                                                   //Select afiliación
+                                                    query2 = "select * from solicitudes";
+                                                    sentencia2 = conexion.prepareStatement(query2);
+                                                    rs2 = sentencia2.executeQuery();
+                                                    while(rs2.next()){
+                                                   %>
+                                                        <option value="<%=rs2.getString("id_solicitud")%>"><%=rs2.getString("nombre")%></option>
+                                                        <%
+                                                    }
+                                                        %>
+                                                    </select>
+                                                    <br>
+                                                    <button class="mx-3 btn btn-primary rounded-pill btn-lg" id=submitButton type=submit>Cambiar datos
+                                                     </button>
+                                                </form>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
                                         <%
                                         }
                                         %>                                 
@@ -124,51 +176,33 @@ if (sesion.getAttribute("id_usuario") == null || sesion.getAttribute("id_usuario
                             </div>
                         </div>
                     </div>
+
                     <!--modal crear citas-->
                     <div class="modal fade" id="crear_cita" tabindex=-1 aria-labelledby=feedbackModalLabel aria-hidden=true>
                         <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header bg-gradient-primary-to-secondary p-4">
-                                <h5 class="modal-title font-alt text-black" id="feedbackModalLabel">Cambiar datos - Deberá volver a iniciar sesión</h5>
+                                <h5 class="modal-title font-alt text-black" id="feedbackModalLabel">Agendar cita</h5>
                                 <button class="btn-close btn-close-white" type="button" data-bs-dismiss="modal" aria-label=Close></button>
                             </div>
                             <div class="modal-body border-0 p-4">
-                                <form id=contactForm action="validaciones/validar_cambiar_datos.jsp" method="POST">
-                                <input type="hidden" name="id_usuario" value="<% out.print(sesion.getAttribute("id_usuario")); %>">
+                                <form id=contactForm action="validaciones/agendar_cita.jsp" method="POST">
+                                    <input type="hidden" name="id_usuario" value="<% out.print(sesion.getAttribute("id_usuario")); %>">
                                     <div class="form-floating mb-3">
-                                    <input class="form-control" name="usuario" placeholder="Enter your name..." required value="<% out.println(sesion.getAttribute("usuario")); %>">
-                                    <label for="usuario">Usuario</label>
-                                    </div>
-                                    <div class="form-floating mb-3">
-                                    <input class="form-control" name="nombre" type="text" placeholder="Ingresa tu Nombre" required value="<% out.println(sesion.getAttribute("nombre")); %>">
+                                    <input class="form-control" readonly="" type="text" placeholder="Ingresa tu Nombre" required value="<% out.println(sesion.getAttribute("nombre")); %>">
                                     <label for="nombre">Nombre</label>
                                     </div>
                                     <div class="form-floating mb-3">
-                                    <select class="custom-select" name="estado_civil" required>
-                                        <option value="Soltero">Soltero</option>
-                                        <option value="Casado">Casado</option>
-                                        <option value="Union">Union Libre</option>                                          
-                                    </select>
-                                    </div>                                          
-                                    <div class="form-floating mb-3">
-                                    <input class="form-control" name="direccion" type="text" placeholder="Ingrese su Direccion" required value="<% out.println(sesion.getAttribute("direccion")); %>">
-                                    <label for="Direccion">Ingrese su Direccion</label>
-                                    </div>
-                                    <div class="form-floating mb-3">
-                                    <input class="form-control" name="email" type="email" placeholder="Ingrese su email" required value="<% out.println(sesion.getAttribute("correo")); %>">
-                                    <label for="email">Ingrese su email</label>
-                                    </div>
-                                    <div class="form-floating mb-3">
-                                    Afiliacion
-                                    <select class="custom-select" name="id_afiliciacion" required>
+                                    Tipo consulta
+                                    <select class="custom-select" name="solicitud" required>
                                         <%
                                         //Select afiliación
-                                        query = "select * from afiliaciones";
+                                        query = "select * from solicitudes";
                                         sentencia = conexion.prepareStatement(query);
                                         rs = sentencia.executeQuery();
                                         while(rs.next()){
                                         %>
-                                        <option value="<%=rs.getString("id_afiliacion")%>"><%=rs.getString("nombre")%></option>
+                                        <option value="<%=rs.getString("id_solicitud")%>"><%=rs.getString("nombre")%></option>
                                         <%
                                         }
                                         %>                                      
@@ -184,23 +218,10 @@ if (sesion.getAttribute("id_usuario") == null || sesion.getAttribute("id_usuario
                         </div>
                         </div>
                     </div>                   
-
-                    
-                <!--Footer-->
-                <footer class="py-4 bg-light mt-auto">
-                    <div class="container-fluid px-4">
-                        <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Your Website 2021</div>
-                            <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
             </div>
         </div>
+                <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
